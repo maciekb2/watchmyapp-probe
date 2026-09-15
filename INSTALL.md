@@ -1,21 +1,20 @@
 # WatchMyApp Probe — Linux installation
 
-Preview distribution. This package requires compatible WatchMyApp Core with
-private-probe support. The production rollout of that support is still pending;
-a downloadable binary alone does not enable workspace registration.
+Install a private probe on a Linux host that can reach the services you want to
+monitor. You need administrator access to a WatchMyApp workspace on Pro or Team.
 
 The probe runs outbound-only and checks the targets assigned by your workspace.
 No inbound ports or VPN connection to WatchMyApp are required.
 
 ## Register a probe
 
-When available in your workspace, a verified administrator opens **Probes &
-locations** and registers a private probe. Save its one-time token in a protected
+A verified workspace administrator opens **Probes & locations** at
+[app.watchmyapp.io](https://app.watchmyapp.io) and registers a private probe. Save its one-time token in a protected
 file. Use a separate registration and buffer for every deployed instance.
 Private probes require an eligible plan (Pro: one, Team: three).
 
 Set `PRIVATE_TARGET_CIDRS` in the supplied configuration to only the internal
-networks you intend to monitor. Empty means public destinations only. Core cannot
+networks you intend to monitor. Empty means public destinations only. Your workspace settings cannot
 expand this local allowlist. Private monitor targets must also be reachable from
 this host. Keep TLS verification enabled.
 
@@ -38,7 +37,7 @@ cd watchmyapp-probe-VERSION-linux-amd64
 ```
 
 The host needs trusted CA certificates, DNS resolution and outbound HTTPS access to
-Core plus the configured monitoring destinations. Install as the host administrator:
+WatchMyApp at `api.watchmyapp.io` plus the configured monitoring destinations. Install as the host administrator:
 
 ```sh
 sudo install -d -m 0700 /etc/watchmyapp
@@ -96,7 +95,7 @@ Do not use `systemctl clean --what=state` during ordinary updates or uninstall.
 ## Credential replacement and revocation
 
 To replace a token, use the workspace action, replace the local protected token
-file and restart the service. Revocation prevents new Core API operations, but a
+file and restart the service. Revocation prevents new WatchMyApp API operations, but a
 disconnected worker can execute previously cached assignments until its lease
 expires (up to 24 hours). Stop the local process as well when revoking it.
 
